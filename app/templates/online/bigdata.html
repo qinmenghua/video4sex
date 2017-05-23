@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block title %}在线视频大数据{% endblock %}
+
+
+{% block content %}
+<br>
+<div class="jumbotron">
+<div class="container">
+    <h4>在线视频数：{{Post.query.count()}}</h4><hr>
+    <h4>在线视频观看总次数：{{db.session.query(SQLfunc.sum(Post.viewtimes).label('viewtimes')).one()[0]}}</h4><hr>
+    <table class="table table-striped">
+      <caption>围观次数最多的前5个视频</caption>
+        <thead>
+          <tr>
+             <th>标题</th>
+             <th>观看次数</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for post in Post.query.order_by(Post.viewtimes.desc()).limit(5).all()%}
+            <tr><td><a href="/online/play?vid={{post.encode}}">{{post.title|safe}}</a></td>  <td>{{post.viewtimes}}</td></tr>
+        {%endfor%}
+        </tbody>
+    </table><hr>
+    <table class="table table-striped">
+      <caption>喜欢最多的前5个视频</caption>
+        <thead>
+          <tr>
+             <th>标题</th>
+             <th>喜欢数</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for post in Post.query.order_by(Post.ilike.desc()).limit(5).all()%}
+            <tr><td><a href="/online/play?vid={{post.encode}}">{{post.title|safe}}</a></td>  <td>{{post.ilike}}</td></tr>
+        {%endfor%}
+        </tbody>
+    </table><hr>
+    <table class="table table-striped">
+      <caption>最冷门的视频，快解救他们</caption>
+        <thead>
+          <tr>
+             <th>标题</th>
+             <th>观看次数</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for post in Post.query.order_by(Post.viewtimes.asc()).limit(5).all()%}
+            <tr><td><a href="/online/play?vid={{post.encode}}">{{post.title|safe}}</a></td>  <td>{{post.viewtimes}}</td></tr>
+        {%endfor%}
+        </tbody>
+    </table><hr>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}Blog{% endblock %}
+
+{%block content%}
+<br>
+<br>
+<br>
+<div class="" style="max-width: 800px;margin:0 auto;">
+{% if session.admin %}
+<h1><a href="/add">写文章</a></h1>
+{%endif%}
+{% if posts %}
+    {% for post in posts %}
+    <blockquote>
+       <a href="/post/{{post.id}}"><h2>{{ post.title | safe }}<h2></a>
+    </blockquote>
+    <hr>
+    {% endfor %}
+{% else %}
+<blockquote>
+<h1>什么都没有</h1>
+<blockquote>
+{%endif%}
+</div>
+{%endblock%}

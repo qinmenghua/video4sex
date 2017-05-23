@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}第一坊网址修改{% endblock %}
+
+{%block content%}            
+<br>
+<br>
+<br>
+
+ <table class="table table-hover table-responsive"><tr><th>url</th><th>管理</th></tr>
+<tbody>
+<tr>
+<form action="/dyf_manage" method="post">
+<td>
+<input name="url" value="{{dyf.url}}">
+</td>
+<td>
+<button class="btn btn-success btn-xs">修改网址</button>
+</form>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+{%endblock%}

@@ -1,0 +1,95 @@
+{%extends 'base.html'%}
+
+{%block title%}先锋计划{%endblock%}
+
+{%block content%}
+ {% import "bootstrap/wtf.html" as wtf %}
+<div class="col-md-12 column">
+            <p>
+                <span>加入先锋计划</span>
+            </p>
+            <div>
+                <p><strong>加入先锋计划，即可获取最新优质视频，享受更佳的链路质量</strong></p>
+                <p><small>每多1人加入先锋计划，所需积分加1，现需{{PioneerNeed.query.first().jifen}}积分</small></p>
+            </div>
+            <div>
+                {%if current_user.isvip%}
+                <code id='msg'>祝贺您，您已经是先锋计划的成员了！</code>
+                {%else%}
+                <code id='msg'>加入先锋计划需要{{PioneerNeed.query.first().jifen}}积分,您有{{current_user.jifen}}积分</code>
+                <button class='btn btn-default btn-sm' id="join_pioneer">加入先锋计划</button>
+                {%endif%}
+            </div>
+            <hr>
+            <div>
+                <div class="box-header">
+                    <h3 class="box-title">
+                        购买礼品卡参与众筹
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <p>
+                        点击相应金额的礼品卡进入购买页面，获得礼品卡后请在本页面使用
+                    </p>
+                    <p>
+                        礼品卡每￥1 可以获得 10 积分
+                    </p>
+                    <p>
+                        如有任何疑问，欢迎发送邮件至 video4sexroot@gmail.com 与我们联系
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <h4>购买礼品卡</h4>
+            <ul class="list-inline">
+                <li>
+                    <a href="http://yunfaka.com/product/CDB5B60A6DE1C60B" target="_blank" class="btn-link">1元礼品卡</a>
+                </li>
+                <li>
+                    <a href="http://yunfaka.com/product/670382EEB1AF9B78" target="_blank" class="btn-link">2元礼品卡</a>
+                </li>
+                <li>
+                    <a href="http://yunfaka.com/product/B938865BC0F85847" target="_blank" class="btn-link">5元礼品卡</a>
+                </li>
+                <li>
+                    <a href="http://yunfaka.com/product/ADF95E488AF6DB86" target="_blank" class="btn-link">10元礼品卡</a>
+                </li>
+                <li>
+                    <a href="http://yunfaka.com/product/9D5F0AFE24A86BF6" target="_blank" class="btn-link">20元礼品卡</a>
+                </li>
+            </ul>
+            <hr>
+            {{wtf.quick_form(form)}}
+        </div>
+{%endblock%}
+
+{% block scripts %}
+
+<script type="text/javascript">
+$SCRIPT_ROOT = "http://"+ document.domain;
+$(document).ready(function(){
+    $("button[id='join_pioneer']").click(function(e) {
+                var $this = $(this);
+                $this.css("color","red");
+                if ({{current_user.jifen}}<{{PioneerNeed.query.first().jifen}})
+                {
+                    alert('积分不够');
+                }
+                else
+                {
+                    $.ajax({
+                            url:$SCRIPT_ROOT+'/join_pioneer',
+                            cache: false,
+                            type: "POST",
+                            dataType: "json",
+                            data: {userid: {{current_user.id}}},
+                            success: function(response) {
+                                    $("#msg").text(response.msg);
+                            }
+                        });
+                }
+
+        });
+});
+</script>
+{%- endblock scripts %}

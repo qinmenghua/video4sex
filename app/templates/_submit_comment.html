@@ -1,0 +1,56 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<div class="row">
+    <div class="col-md-8" id="submit-comment-container">
+{#        <div class="alert alert-info alert-dismissable" id="reply-dialog-box">#}
+{#            <button type="button" class="close" data-dismiss="alert" id="undo_reply">&times;</button>#}
+{#            回复<strong><i>香飘叶子</i></strong> </div>#}
+        {%if current_user.is_authenticated%}
+        <form class="submit-comment-form" id="submit-comment-form" method="post" action="{{url_for('main.comment')}}">
+            {{ form.csrf_token }}
+            {{ form.follow(type='hidden') }}
+            {{ form.vid(type='hidden') }}
+            {{ form.name.label }}{{ form.name(class='form-control', required='', value=current_user.username) }}
+            {{ form.email.label }}{{ form.email(class='form-control', required='', value=current_user.email) }}
+            {{ form.content.label }}{{ form.content(class='form-control', required='') }}
+            <button type="submit" class="btn btn-default">
+                提交
+            </button>
+        </form>
+        {%else%}
+        <h3>登陆后可评论</h3>
+        <!--去你大爷的有本事继续刷垃圾评论-->
+        {%endif%}
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    //Rest the value when reply-dialog-box dismiss
+function undo_reply() {
+    $('#follow').val(-1);
+}
+
+function go_to_reply(id, author_name) {
+    $('html, body').animate({scrollTop:  $('#submit-comment').offset().top}, 800);
+    $('#follow').val(id);
+    $('#reply-dialog-box').remove();
+    $('#submit-comment-container').prepend('<div class="alert alert-info alert-dismissable" id="reply-dialog-box">' +
+            '<button type="button" class="close" data-dismiss="alert" onclick="undo_reply()">&times;</button>' +
+            '回复给<strong><i>' + author_name +'</i></strong> </div>');
+}
+
+//Reset the follow value when refresh page
+window.onload = function(){
+    $('#follow').val(-1);
+}
+
+//JS For confirm to delete a comment in articleDetails page
+function delCommentCfm(url) {
+    $('#delCommentCfmClick').click(function(){
+        window.location.href = url;
+    });
+    $('#delCommentCfmModel').modal();
+}
+
+</script>>

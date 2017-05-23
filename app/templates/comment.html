@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}留言板/MessageBox{% endblock %}
+
+{%block comment%}   
+
+<!--link href="/static/markdown.css" rel="stylesheet"-->
+<h1>留言板</h1>       <div id="disqus_thread"></div><script>/***  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/var disqus_config = function () {this.page.url = 'http://tumbgo.com/comment';  // Replace PAGE_URL with your page's canonical URL variablethis.page.identifier = 'comment'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable};(function() { // DON'T EDIT BELOW THIS LINEvar d = document, s = d.createElement('script');s.src = 'https://tumbgo-com.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>                                                         <!--
+<div class="flask-pagedown"><textarea class="form-control" rows="10" id="flask-pagedown-body" form="commentform" name="content" class="form-control flask-pagedown-input" style="resize: none;"></textarea></div><div class="flask-pagedown-preview" id="flask-pagedown-body-preview"></div><script type="text/javascript">f = function() {    if (typeof flask_pagedown_converter === "undefined")        flask_pagedown_converter = Markdown.getSanitizingConverter().makeHtml;    var textarea = document.getElementById("flask-pagedown-body");    var preview = document.getElementById("flask-pagedown-body-preview");    textarea.onkeyup = function() { preview.innerHTML = flask_pagedown_converter(textarea.value); }    textarea.onkeyup.call(textarea);}if (document.readyState === 'complete')    f();else if (window.addEventListener)    window.addEventListener("load", f, false);else if (window.attachEvent)    window.attachEvent("onload", f);else    f();</script>
+<form action="/comment" method="post" id="commentform">
+    <input type='hidden' name='zhan' value='main'/> 
+    <input type='hidden' name='postid' value='1'/> 
+    {%if not session.logged_in%}
+    <input type="text" name="who" placeholder="昵称">
+    {% endif %}
+    <button class="btn btn-success">提交评论</button>
+</form>{% block scripts %}{{ super() }}{{ pagedown.include_pagedown() }}{% endblock %}
+<hr><ul class="comments">    {% for comment in comments %}    <li class="comment">        <div class="comment-content">            <div class="comment-date">{{ comment.time }}</div>            <div class="comment-author">{{ comment.who }}</div>            <div class="comment-body">                    {% if comment.body_html %}                        {{ comment.body_html | safe }}                    {% else %}                        {{ comment.content }}                    {% endif %}            </div>            {% if session.admin %}                <br>                <form action="/delete" method="post">                	<input type='hidden' name='commentid' value='{{ comment.id }}'/>                 	<button class="btn btn-success btn-xs">删除评论</button>                </form>            {% endif %}        </div>    </li>    {% endfor %}</ul>
+-->
+{%endblock%}

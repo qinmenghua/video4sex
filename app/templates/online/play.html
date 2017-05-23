@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}{{url.title|safe}}{% endblock %}
+
+
+{%block content%}
+<br>
+<link href="http://vjs.zencdn.net/4.10/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.10/video.js"></script>
+
+{%if url.flag!='fahai'%}
+    {%if url.openload_url!=None%}
+    <iframe src="{{url.openload_url}}" frameborder="0" width="100%" height="500" scrolling="no"></iframe>
+    {%else%}
+    <video id="example_video_1" class="video-js vjs-default-skin" autoplay="autoplay" controls preload="auto" loop width="100%" height="100%" poster="{%if url.flag=='hdr'%}{{url.picture}}{%else%}{{url.zhan}}/{{url.picture}}{%endif%}" >
+     <source id="mp4_url" src="{{url.video}}" type="video/mp4"></source>
+    </video>
+    {%endif%}
+{% else %}
+    <iframe src="{{url.video}}" frameborder="0" width="100%" height="500" scrolling="no"></iframe>
+{% endif %}
+<div class="btn-group btn-group-mb actions-left" role="group">
+    <button id="like" class="btn btn-default btn-d" data-toggle="tooltip" data-placement="top" title="我喜欢这个视频!!">
+    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>喜欢<span id="ilike" class="no-text">{{url.ilike}}</span>
+    </button>
+    <button id="dislike" class="btn btn-default btn-d" data-toggle="tooltip" data-placement="top" title="我不喜欢这个视频!!">
+    <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>不喜欢<span id="unlike" class="no-text">{{url.unlike}}</span>
+    </button>
+</div>
+<br />
+<div class="btn-group btn-group-mb actions-left" role="group">
+<h4>标签:</h4>
+{%for tag in onlineTag.query.filter_by(encode_id=vid).all()%}
+<span class="label label-primary"><a href="/tags?tag={{tag.tag}}">{{tag.tag}}</a></span>
+{%endfor%}
+</div>
+
+
+ <br><div class="text-center">
+ <h4 id='alert'></h4>
+ <label>分享本视频</label>
+ <textarea rows=2 class="form-control" style="resize:none;">{{url.title|safe}}：http://www.video4sex.com/online/play?vid={{url.encode}}</textarea>
+{% if current_user.is_authenticated %}
+    {%if url.openload_url!=None%}
+    <a href="{{url.openload_url}}" target="_blank" class="btn btn-primary" download="Tumblr自助餐_在线视频_{{url.title|safe}}.mp4">下载本视频</a>
+    {%else%}
+    <a href="{{url.video}}" target="_blank" class="btn btn-primary" download="Tumblr自助餐_在线视频_{{url.title|safe}}.mp4">下载本视频</a>
+    {%endif%}
+{% else %}
+<!--<input type="button" value="下载本视频" class="btn" onclick='document.getElementById("alert").innerHTML="需登录才能下载！";'>-->
+{%if url.flag!='fahai'%}<a href="{{url.video}}" target="_blank" class="btn btn-primary" download="Tumblr自助餐_在线视频_{{url.title|safe}}.mp4">下载本视频</a>{%endif%}
+{% endif %}
+{% if rand==None %}
+    <h4>今天看的随机小电影超过20个了！想看更多随机小视频<a href="/register"><B>请注册</B></a>，或者{{info}}再来~</h4>
+    {% else %}
+    <form action="/online/play" method="get">
+            <input type='hidden' name='random' value='random'/>
+            <input type='hidden' name='vid' value='{{rand.encode}}'/>
+            <button type='submit' class="btn btn-large btn-success"/>{{rand.title|safe}}（{{count}}/20）</button>
+
+    </form>
+{% endif %}
+</div>
+    <hr>
+    <h4 id="comments"><span class="glyphicon glyphicon-comment">评论</span></h4>
+    {% include "_online_comments.html" %}
+    <h4  id="submit-comment"><span class="glyphicon glyphicon-comment">发表评论</span></h4>
+    {% include "_submit_comment.html" %}
+
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/JavaScript">
+$SCRIPT_ROOT = "http://"+ document.domain;
+
+$(document).ready(function(){
+    $("button[id='like'],button[id='dislike']").click(function(e) {
+        var rating = 1;
+        var like=$("#ilike").text();
+        var unlike=$("#unlike").text();
+        if ($(this).attr('id') == 'dislike') {
+            rating = -1;
+        }
+        $.ajax({
+            url:$SCRIPT_ROOT+'/ajax',
+            cache: false,
+            type: "POST",
+            dataType: "json",
+            data: {vid: {{url.id}}, zhan:'{{url.zhan}}',rating: rating},
+            success: function(response) {
+                    var color = 'text-success';
+                    var id    = 'like-icon';
+                    if (rating == '-1') {
+                        color = 'text-muted';
+                        id    = 'dislike-icon';
+                    }
+                    $("i[id='" + id + "']").addClass(color);
+                    $("#ilike").text(response.like);
+                    $("#unlike").text(response.unlike);
+                    $("button[id='like'],button[id='dislike']").prop('disabled', true);
+
+
+            }
+        });
+    });
+});
+
+
+
+</script>
+{%- endblock scripts %}

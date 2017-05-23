@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+
+{% block title %}video4sex - video for sex{% endblock %}
+
+{% block content %}
+<div class="" style="max-width: 800px;margin:0 auto;">
+<form action="/online/play" method="get">
+        <input type='hidden' name='random' value='random'/>
+        <input type='hidden' name='vid' value='{{rand.encode}}'/>
+        <button type='submit' class="btn btn-large btn-success"/>
+        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>{{rand.title|safe}}（{{count}}/20）
+        </button>
+</form>
+<div class="jumbotron">
+<div class="container">
+    <p class="bg-success"><h2><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <a href="/online/vip">VIP视频区</a> <small>急速播放，免等待~</small></h2></p>
+    <p class="bg-success"><h2><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <a href="/online">免费视频区</a> <small>无需下载，想看就看~</small></h2></p>
+    <p class="bg-success"><h2><span class="glyphicon glyphicon-header" aria-hidden="true"></span> <a href="/cl">草榴资源区</a> <small>草榴触手可及</small></h2></p>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{%block footer%}
+<div id="Bottom" style="max-width: 700px;margin:0 auto;">
+    <div class="content">
+        <div class="inner">
+            <div class="sep10"></div>
+                <div class="fr">
+                    <a href="https://m.do.co/c/dbd97068223d" target="_blank"><img src="{{url_for('static',filename='do.png')}}" width="64" border="0" alt="DigitalOcean" /></a>
+                </div>
+                友情链接：
+                {% for url in FriendUrl.query.filter_by(isvalid=True).order_by(FriendUrl.order.asc()).all()%}
+                <a href="{{url.url}}" rel="nofollow" target="_blank">{{url.name}}</a> &nbsp; <span class="snow">·</span> &nbsp;
+                {% endfor %}
+                <div class="sep20"></div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+

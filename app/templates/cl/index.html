@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+{% block title %}草榴1024搬运工-{{ forum }}{% endblock %}
+
+{% block subnav %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<ul class="list-group">
+{% for post in posts %}
+<li class="list-group-item">
+    <span class="badge">{{post.createtime|safe}}</span>
+    <a href="/post?forum={{forumid}}&id={{post.id}}" target="_blank">{{post.title|safe}}</a>
+</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block pageup %}
+<br>
+<br>
+<div class="container">
+<div class="row">
+<div class="col-sm-12">
+<ul class="nav nav-pills">
+<li role="presentation" {% if forumid=='a' %}class="active"{% endif %}><a href="/cl?forum=a">技术讨论区</a></li>
+<li role="presentation" {% if forumid=='b' %}class="active"{% endif %}><a href="/cl?forum=b">新时代的我们</a></li>
+<li role="presentation" {% if forumid=='c' %}class="active"{% endif %}><a href="/cl?forum=c">达盖尔的旗帜</a></li>
+<li role="presentation" {% if forumid=='d' %}class="active"{% endif %}><a href="/cl?forum=d">成人文学</a></li>
+<li role="presentation" {% if forumid=='e' %}class="active"{% endif %}><a href="/cl?forum=e">HTTP下载区</a></li>
+<li role="presentation" {% if forumid=='f' %}class="active"{% endif %}><a href="/cl?forum=f">在线成人影院</a></li>
+<li style="margin: 0;clear:both;"></li>
+<li role="presentation" {% if forumid=='g' %}class="active"{% endif %}><a href="/cl?forum=g">亚洲无码原创区</a></li>
+<li role="presentation" {% if forumid=='h' %}class="active"{% endif %}><a href="/cl?forum=h">亚洲无码转帖区</a></li>
+<li role="presentation" {% if forumid=='i' %}class="active"{% endif %}><a href="/cl?forum=i">亚洲有码原创区</a></li>
+<li role="presentation" {% if forumid=='j' %}class="active"{% endif %}><a href="/cl?forum=j">亚洲有码转帖区</a></li>
+<li role="presentation" {% if forumid=='k' %}class="active"{% endif %}><a href="/cl?forum=k">欧美原创区</a></li>
+<li role="presentation" {% if forumid=='l' %}class="active"{% endif %}><a href="/cl?forum=l">欧美转帖区</a></li>
+<li role="presentation" {% if forumid=='m' %}class="active"{% endif %}><a href="/cl?forum=m">动漫原创区</a></li>
+<li role="presentation" {% if forumid=='n' %}class="active"{% endif %}><a href="/cl?forum=n">动漫转帖区</a></li>
+</ul>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block pagedown %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.clindex',forum=forumid) }}
+</div>
+{% endif %}
+{% endblock %}

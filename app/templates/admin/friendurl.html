@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}友链管理{% endblock %}
+
+{%block content%}            
+<br>
+<br>
+<br>
+<div class="" style="max-width: 800px;margin:0 auto;">
+<form class="form-horizontal" role="form" action="/varifyf" method="post"> 
+    <div class="form-group"> 
+        <div class="col-sm-offset-2 col-sm-10"> 
+            <button type="submit" id="varify" class="btn btn-default">验证友链</button> 
+        </div> 
+    </div> 
+</form>
+<form class="form-horizontal" role="form" action="/addf" method="post"> 
+    <div class="form-group"> 
+        <label for="url" class="col-sm-2 control-label">url</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name='url' id="url" placeholder="url"> 
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <label for="name" class="col-sm-2 control-label">名字</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="name" id="name" placeholder="name">
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <label for="name" class="col-sm-2 control-label">顺序</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="order" id="order" placeholder="order">
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <div class="col-sm-offset-2 col-sm-10"> 
+            <button type="submit" class="btn btn-default">提交</button> 
+        </div> 
+    </div> 
+</form>
+
+ <table class="table table-hover table-responsive"><tr><th>顺序</th><th>url</th><th>名字</th><th>是否有效</th><th>是否友链</th><th>管理</th></tr>
+<tbody>
+{% for url in urls %}
+<tr>
+<form action="/alterf" method="post">
+<td>
+<input name="id" type="hidden" value="{{url.id}}">
+<input name="order"  value="{{url.order}}">
+</td>
+<td>
+<input name="url" value="{{url.url}}">
+</td>
+<td><input name="name" value="{{url.name}}"></td>
+<td><input name="isvalid" value="{{url.isvalid}}"></td>
+<td><input name="isok" value="{{url.isok}}"></td>
+<td>
+<input type="submit" class="btn btn-success btn-xs" value="修改友链">
+</form>
+<form action="/deletef" method="post">
+    <input type='hidden' name='id' value='{{ url.id }}'/> 
+    <button class="btn btn-success btn-xs">屏蔽友链</button>
+</form>
+<form action="/renewf" method="post">
+    <input type='hidden' name='id' value='{{ url.id }}'/> 
+    <button class="btn btn-success btn-xs">恢复友链</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{%endblock%}

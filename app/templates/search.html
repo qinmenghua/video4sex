@@ -1,0 +1,23 @@
+{% extends "ibase.html" %}
+
+{% block title %}搜索-{{keyword}}{% endblock %}
+
+{%block content1%}            		
+            {% if clposts!=None %}
+            <h3>草榴内容</h3>
+            {%for post in clposts%}
+            <a href="/post?forum={{post.forum}}&id={{post.id}}" target="_blank">{{post.title|safe}}</a><br>
+            {%endfor%}
+            {% endif %}
+{%endblock%}
+{%block content2%}            		
+            {% if onlineposts!=None %}
+            <h3>在线视频</h3>
+            {%for post in onlineposts%}
+            <form target='_blank' action='/online/play' method="get">
+                <input type='hidden' name='vid' value='{{post.encode}}'/> 
+                <button type='submit' class="btn btn-link">{{post.title|safe}}</button>
+            </form>
+            {%endfor%}
+            {% endif %}
+{%endblock%}

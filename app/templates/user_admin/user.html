@@ -1,0 +1,35 @@
+{%extends 'base.html'%}
+{% import '_macros.html' as macros %}
+{%block title%}用户资料{%endblock%}
+
+{%block content%}
+{%if current_user.id==user.id or current_user.id==1%}
+<div class="page-header">
+    <h1>{{user.username}}</h1>
+    <p>最近登录时间：{{user.last_seen}}</p>
+    <hr>
+    {%for post in posts%}
+        <article class="excerpt">
+          <p class="image-container" >
+             <a class="focus" href="/online/play?vid={{post.encode_id}}" target="_blank"><img src="{%if post.post.flag=='hdr'%}{{post.post.picture}}{%else%}{{post.post.zhan}}/{{post.post.picture}}{%endif%}"  class="thumb"></a>
+          </p>
+          <header>
+             <a class="cat" href="/online/play?vid={{post.encode_id}}" target="_blank">{{post.post.title[:5]|safe}}<i></i></a>
+             <h2><a href="/online/play?vid={{post.encode_id}}" target="_blank">{{post.post.title|safe}}</a></h2>
+          </header>
+          <p class="meta"><span class="pv"><i class="fa fa-eye"></i>阅读({{post.viewtimes}})</span><a class="pc" href="/online/play?vid={{post.encode_id}}""><i class="fa fa-comments-o"></i>评论(<span class="ds-thread-count" data-thread-key="1109" data-count-type="comments">{{post.post.comments.count()}}</span>)</a><span class="pv ding"><i class="fa fa-heart"></i>{{post.post.ilike}}</span></p>
+    </article>
+    {%endfor%}
+    <hr>
+    <div class="text-center">
+    {% if pagination %}
+    <div class="pagination">
+    {{ macros.pagination_widget(pagination, 'user_admin.user',userid=current_user.id) }}
+    </div>
+    {% endif %}
+    </div>
+{%else%}
+<h2>暂时不能查看他人资料</h2>
+{%endif%}
+
+{%endblock%}

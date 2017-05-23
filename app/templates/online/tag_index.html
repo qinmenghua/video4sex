@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+
+{% block title %}青娱乐视频-在线视频{% endblock %}
+
+{% block pagedown %}
+<div class="text-center">
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.tagindex',sortby=sortby,rever=rever,tag=tag) }}
+</div>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+
+<div class="text-center">
+
+<div class="row">
+{% for post in posts %}
+<article class="excerpt">
+        <p class="image-container" >
+           <a class="focus" href="/online/play?vid={{post.post.encode}}" target="_blank"><img src="{%if post.post.flag=='hdr'%}{{post.post.picture}}{%else%}{{post.post.zhan}}/{{post.post.picture}}{%endif%}"  class="thumb"></a>
+        </p>
+        <header>
+           <a class="cat" href="/online/play?vid={{post.post.encode}}" target="_blank">{{post.post.title[:5]|safe}}<i></i></a>
+           <h2><a href="/online/play?vid={{post.post.encode}}" target="_blank">{{post.post.title|safe}}</a></h2>
+        </header>
+        <p class="meta"><span class="pv"><i class="fa fa-eye"></i>阅读({{post.post.viewtimes}})</span><a class="pc" href="/online/play?vid={{post.post.encode}}""><i class="fa fa-comments-o"></i>评论(<span class="ds-thread-count" data-thread-key="1109" data-count-type="comments">{{post.post.comments.count()}}</span>)</a><span class="pv ding"><i class="fa fa-heart"></i>{{post.post.ilike}}</span></p>
+  </article>
+{% endfor %}
+</div>
+</div>
+<input type="hidden" id="mp4" value="">
+<label>分享本页视频</label>
+<textarea rows=5 class="form-control" style="resize:none;">
+{%- for post in posts -%}
+{{post.post.title|safe}}：http://www.video4sex.com/online/play?vid={{post.post.encode}}&#13;&#10;
+{%- endfor -%}
+</textarea>
+{% endblock %}
+
+
+{% block scripts %}
+{%- endblock scripts %}

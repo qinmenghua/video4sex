@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}友链管理{% endblock %}
+
+{%block content%}            
+<br>
+<br>
+<br>
+<div class="" style="max-width: 800px;margin:0 auto;">
+<form class="form-horizontal" role="form" action="/adduser" method="post"> 
+    <div class="form-group"> 
+        <label for="url" class="col-sm-2 control-label">用户名</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name='username' id="username" placeholder="username"> 
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <label for="name" class="col-sm-2 control-label">邮箱</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="email" id="email" placeholder="email">
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <label for="name" class="col-sm-2 control-label">密码</label> 
+        <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="password" id="password" placeholder="password">
+        </div> 
+    </div> 
+    <div class="form-group"> 
+        <div class="col-sm-offset-2 col-sm-10"> 
+            <button type="submit" class="btn btn-default">提交</button> 
+        </div> 
+    </div> 
+</form>
+
+</div>
+{%endblock%}

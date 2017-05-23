@@ -1,0 +1,166 @@
+{% block doc -%}
+
+<!DOCTYPE html>
+<html style="font-family:"Comic Sans MS","幼圆","黑体",sans-serif;">
+{%- block html %}
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content=""/>
+    <meta name="description" content="" />
+    {%- block head %}
+    <title>{% block title %}{% endblock title %}{{test}}</title>
+    {%- block styles %}
+    <!-- Bootstrap -->
+    <script src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.js"></script>
+   <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" />
+   <link rel='stylesheet'  href="{{url_for('static',filename='css/main.css')}}" type="text/css"  />
+   <link rel='stylesheet'  href='https://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.css' type='text/css' media='all' />
+   <link href="{{url_for('static',filename='css/common.css')}}" rel="stylesheet">
+   <script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+    <link rel="shortcut icon" href="{{url_for('static',filename='favicon.ico')}}">
+    {%- endblock styles %}
+    {%- endblock head %}
+  </head>
+<body class="home blog">
+  {% import "bootstrap/wtf.html" as wtf %}
+<header class="header">
+  <div class="container">
+    <h1 class="logo"><a href="/" title="video4sex"><img src="{{ url_for('static', filename='image/logo.png') }}">video4sex</a></h1>
+    <div class="brand">视频分享 <br>
+      如果不可以播放请换个看看</div>
+    <ul class="site-nav site-navbar">
+      <li id="menu-item-0" ><a rel="nofollow" href="/"><i class="fa fa-home"></i>&nbsp;&nbsp;免费视频</a></li>
+      <li id="menu-item-0" ><a rel="nofollow" href="/online/vip"><i class="fa fa-video-camera"></i>&nbsp;&nbsp;vip视频</a></li>
+      <li id="menu-item-0" ><a rel="nofollow" href="/cl"><i class="fa fa-star"></i>&nbsp;&nbsp;草榴</a></li>
+      <li id="menu-item-0" ><a rel="nofollow" href="/online/bigdata">&nbsp;&nbsp;在线视频大数据</a></li>
+      {%if current_user.is_authenticated%}
+      <li id="menu-item-0" ><a rel="nofollow" href="/pioneer_proj">&nbsp;&nbsp;先锋计划</a></li>
+      {%endif%}
+      {%if session.admin%}
+      <li id="menu-item-0"><a href="/admin">后台管理</a></li>
+      {%endif%}
+      <li class="menusns" id="menu-item-0"> <a href="javascript:;">视频分类<i class="fa fa-angle-down"></i></a>
+          <ul class="sub-menu">
+          {%for tag in tags%}
+            <li><a href="/tags?tag={{tag[0]}}">{{tag[0]}}</a></li>
+          {%endfor%}
+          </ul>
+        </li>
+      <li class="navto-search"><a href="javascript:;" class="search-show active"><i class="fa fa-search"></i></a></li>
+    </ul>
+    <div class="topbar">
+      {%if not current_user.is_authenticated%}
+      <a data-toggle="modal" data-target="#login" href="#">登录</a> &nbsp; &nbsp;
+      <a data-toggle="modal" data-target="#register" href="#">注册</a> &nbsp; &nbsp;
+      {%else%}
+      <a href="/user/{{current_user.id}}">观看记录</a>
+      <a href="/change-password">修改密码</a>
+      <a href="/logout">注销</a>
+      {%endif%}
+      </div>
+    <i class="fa fa-bars m-icon-nav"></i>
+    </div>
+</header>
+<div class="site-search">
+  <div class="container">
+    <form method="get" name="searchform" id="searchform" class="site-search-form" action="/search" >
+      <input class="search-input" name="q" type="text" placeholder="输入关键字" value="">
+      <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+
+<section class="container">
+  <div class="content-wrap">
+    <div class="content">
+      <div class="title">
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning text-center" style="max-width: 600px;margin:0 auto;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{message}}
+        </div>
+    {% endfor %}
+            {% block pageup %}{% endblock %}
+            {% block content %}{% endblock %}
+            {% block pagedown %}{% endblock %}
+            {% block comment %}{% endblock %}
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">登录</h4>
+                </div>
+                <div class="modal-body">
+                {{wtf.quick_form(loginform,action="/login")}}
+                <br>
+                <p>忘记密码？ <a href="{{ url_for('auth.password_reset_request') }}">重设密码</a>.</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">注册</h4>
+                </div>
+                <div class="modal-body">
+                   {{wtf.quick_form(regform,action="/register")}}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+  </div>
+</section>
+<footer>
+{%block footer%}
+<div class="yqlj">
+  <div class="yqljbt">
+    <div class="yqljbt_l"> <a href="javascript:void(0);" target="_blank">友情链接</a></div>
+    <div class="yqljbt_r"><a href="mailto:video4sexroot@gmail.com" target="_blank">申请</a></div>
+  </div>
+  <div class="yqljlb">
+    <ul>
+        {% for url in FriendUrl.query.filter_by(isvalid=True).order_by(FriendUrl.order.asc()).all()%}
+        <li><a href="{{url.url}}" rel="nofollow" target="_blank">{{url.name}}</a></li>
+        {% endfor %}
+      </ul>
+  </div>
+</div>
+{%endblock%}
+<footer class="footer">
+  <div class="container">
+    <div class="fcode"> </div>
+    <small>【站点申明】我们立足于美利坚合众国，对全球华人服务，受北美法律保护。未经授权禁止复制或建立镜像。注意：本站属于限制级，如果您未满18岁请速离开，为了您的学业与健康成长，谢谢合作！ 本站为全球华人服务,由于限制级不对中国开放,如果您所在地区为中国请遵守中国法律,关闭网站。
+    <p>申请友链请联系: video4sexroot#gmail.com (#换成@)</p>
+     </div>
+</footer>
+<script>
+    window.jsui={
+        www: '/',
+        uri: '/static',
+        ver: '1.3',
+        roll: ["1","2"],
+        ajaxpager: '0',
+        url_rp: '/static'
+    };
+</script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{%for ad in AD600.query.filter_by(isvalid=True).all()%}
+<script src='{{ad.url}}'></script>
+{%endfor%}
+    {% block scripts %}
+    {%- endblock scripts %}
+<div style="display:none">
+<br><script src="http://s4.cnzz.com/stat.php?id=1258058067&web_id=1258058067" language="JavaScript"></script>
+</div>
+  </body>
+{%- endblock html %}
+</html>
+{% endblock doc -%}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}后台管理{% endblock %}
+
+{%block content%}
+<br>
+<div class="jumbotron">
+<div class="container">
+    <h4>总注册人数：{{User.query.count()}}</h4>
+    <h4>在线视频数：{{Post.query.count()}}</h4>
+    <h4>在线视频观看总次数：{{db.session.query(SQLfunc.sum(Post.viewtimes).label('viewtimes')).one()[0]}}</h4>
+</div>
+</div>
+<form action="/reboot" method="post" style="display:inline">
+    <input type='hidden' name='reboot' value='1'/>
+    <button class="btn btn-danger btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span><h4>重启系统</h4></button>
+</form>
+<form action="/restart" method="post" style="display:inline">
+    <input type='hidden' name='restart' value='1'/>
+    <button class="btn btn-warning btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><h4>重启网站</h4></button>
+</form>
+<form action="/stop" method="post" style="display:inline">
+    <input type='hidden' name='restop' value='1'/>
+    <button class="btn btn-warning btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-off" aria-hidden="true"></span><h4>停止网站</h4></button>
+</form>
+<form action="/updatecl" method="post" style="display:inline">
+    <input type='hidden' name='updatecl' value='1'/>
+    <button class="btn btn-success btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><h4>更新草榴</h4></button>
+</form>
+<form action="/washcl" method="post" style="display:inline">
+    <input type='hidden' name='washcl' value='1'/>
+    <button class="btn btn-success btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><h4>清洗草榴</h4></button>
+</form>
+<form action="/updateonline" method="post" style="display:inline">
+    <input type='hidden' name='updateonline' value='1'/>
+    <button class="btn btn-success btn-d" data-toggle="tooltip" data-placement="top" type="submit"><span class="glyphicon glyphicon-download" aria-hidden="true"></span><h4>更新在线视频</h4></button>
+</form>
+<h2><a href="/payout">结算系统</a></h2>
+<h2><a href="/comment_manage">评论管理</a></h2>
+<h2><a href="/friendurl">友链管理</a></h2>
+<h2><a href="/adduser">添加用户</a></h2>
+<h2><a href="/updateonlineurl">更新在线视频网站</a></h2>
+<h2><a href="/dyf_manage">第一坊网址</a></h2>
+<h2><a href="/upload">上传文件</a></h2>
+<h2><a href="/create_short_url">创建短网址</a></h2>
+<h1>嘿嘿嘿</h1>
+{%endblock%}
